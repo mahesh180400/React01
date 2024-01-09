@@ -15,6 +15,7 @@ const Expensesetitem=(props)=>{
         console.log('clicked !')
     }
    return (
+    <li>
        <Card className="expense-item">
        <ExpenseDate date={props.date} />
         <div className="expense-item_description">
@@ -25,6 +26,7 @@ const Expensesetitem=(props)=>{
         <button onClick={clickhandler}>Click to Delete</button>
 
         </Card>
+        </li>
        
     );
 }
