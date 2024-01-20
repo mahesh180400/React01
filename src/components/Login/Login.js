@@ -48,9 +48,6 @@ const Login = (props) => {
       );
   };
 
-  const validateEmailHandler = () => {
-   dispatchEmail({type:'INPUT_BLUR'})
-  };
 
   const validatePasswordHandler = () => {
     setPasswordIsValid(enteredPassword.trim().length > 6);
@@ -75,7 +72,7 @@ const Login = (props) => {
             id="email"
             value={emailState.value}
             onChange={emailChangeHandler}
-            onBlur={validateEmailHandler}
+            
           />
         </div>
         <div
