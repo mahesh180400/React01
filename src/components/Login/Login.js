@@ -1,7 +1,9 @@
-import React, { useState,useReducer } from 'react';
+import React, { useState,useReducer,useContext } from 'react';
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
 import Button from '../UI/Button/Button';
+import AuthContext from '../../store/authContext';
+import Input from '../UI/Input/Input';
 
 const emailReducer=(state,action)=>{ 
   if(action.type==='USER_INPUT')
@@ -22,7 +24,7 @@ const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState,dispatchEmail]=useReducer(emailReducer,{value:'', isValid:null});
-
+  const authCtx=useContext(AuthContext)
   /*useEffect(()=>{
     const TimeOutId=setTimeout(()=>{
       console.log("Check Validity")
@@ -55,26 +57,16 @@ const Login = (props) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    props.onLogin(emailState.value, enteredPassword);
+    authCtx.onLogin(emailState.value, enteredPassword);
   };
 
   return (
     <Card className={classes.login}>
       <form onSubmit={submitHandler}>
-        <div
-          className={`${classes.control} ${
-            emailState.isValid === false ? classes.invalid : ''
-          }`}
-        >
-          <label htmlFor="email">E-Mail</label>
-          <input
-            type="email"
-            id="email"
-            value={emailState.value}
-            onChange={emailChangeHandler}
-            
-          />
-        </div>
+      <Input id='email' label='E-mail' type='email' isValid={emailState}
+      value={emailState.value}
+      onBlur={emailChangeHandler}
+      ></Input>
         <div
           className={`${classes.control} ${
             passwordIsValid === false ? classes.invalid : ''
