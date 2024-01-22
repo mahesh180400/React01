@@ -1,23 +1,58 @@
-import React, { useContext } from 'react';
-import AuthContext from './store/authContext';
-import Login from './components/Login/Login';
-import Home from './components/Home/Home';
-import MainHeader from './components/MainHeader/MainHeader';
+import React, { useState,useEffect } from 'react';
+import NewForm from './Form/NewForm';
+import Userlist from './Form/Userlist';
 
 function App() {
+  const [userList, setUserList] = useState([])
+  const [total,setTotal]=useState(0);
 
-const ctx=useContext(AuthContext)
+  useEffect(() => {
+    let newTotalPrice = 0;
+  
+    for (const user of userList) {
+      const d=+user.price;
+      newTotalPrice=newTotalPrice+d
+    }
+    setTotal(newTotalPrice);
+  }, [userList]);
+  
+
+
+  const addUserHandler = (Id, price, name) => {
+    setUserList((prevUserList) => [
+      ...prevUserList,
+      { Id,price,name,id: Math.random().toString(),},
+    ]);
+    const obj={
+      Id,
+      price,
+      name,
+    }
+    let data=JSON.stringify(obj)
+    localStorage.setItem(Id,data)
+  };
+
+
+  const deleteUserHandler = (userrandomid,userId) => {
+    localStorage.removeItem(userId)
+    setUserList((prevUserList) => prevUserList.filter((user) => user.id !== userrandomid));
+    
+   
+  };
 
 
   return (
-    <React.Fragment>
-      <MainHeader  />
-      <main>
-        {!ctx.isLoggedIn && <Login  />}
-        {ctx.isLoggedIn && <Home  />}
-      </main>
-      </React.Fragment>
-    
+    <div>
+      <h1>New Form</h1>
+       <NewForm
+        onAddUser={addUserHandler}
+      />
+      <Userlist
+        users={userList}
+        onDeleteUser={deleteUserHandler}
+        total={total}
+      />
+    </div>
   );
 }
 
