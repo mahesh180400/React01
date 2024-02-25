@@ -2,8 +2,23 @@ import Container from 'react-bootstrap/Container';
 import './App.css';
 import Navbarr from './Header.js/Navbar';
 import Button from 'react-bootstrap/Button';
+import { useState } from 'react';
 function App() {
-  
+const [add,setadd]=useState([]);
+const [token,settoken]=useState(0)
+const addhandler=(product)=>{
+  console.log('ghe na ata')
+  let newtoken=token+1
+  settoken(newtoken++)
+  setadd((prev) => [...prev, { ...product, key: token}]);
+
+}
+;
+const removehandler=(key)=>{
+  let newtoken=token-1
+  settoken(newtoken)
+  setadd((prev) => prev.filter((item) => item.key !== key));
+}
     
 const productsArr = [
 
@@ -53,7 +68,7 @@ const productsArr = [
   return (
   <>
   
-  <Navbarr />
+  <Navbarr add={add} removehandler={removehandler} token={token}/>
       <Container className="custom-container">
         
         <div className="products-container">
@@ -62,7 +77,7 @@ const productsArr = [
               <img src={product.imageUrl} alt={product.title} />
               <h3>{product.title}</h3>
               <p>${product.price}</p>
-              <Button variant="info">Add To Cart</Button>{' '}  
+              <Button variant="info" onClick={()=>addhandler(product)}>Add To Cart</Button>{' '}  
             </div>
           ))}
         </div>
