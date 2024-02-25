@@ -2,16 +2,20 @@ import Container from 'react-bootstrap/Container';
 import './App.css';
 import Navbarr from './Header.js/Navbar';
 import Button from 'react-bootstrap/Button';
-import { useState } from 'react';
+import { useState,createContext } from 'react';
+export const Gloablinfo=createContext();
 function App() {
 const [add,setadd]=useState([]);
 const [token,settoken]=useState(0)
 const addhandler=(product)=>{
-  console.log('ghe na ata')
+  const isproduct=add.some((item)=>item.title===product.title);
+  if(isproduct){
+    alert("Product is Already Added!")
+  }else{
   let newtoken=token+1
   settoken(newtoken++)
   setadd((prev) => [...prev, { ...product, key: token}]);
-
+  }
 }
 ;
 const removehandler=(key)=>{
@@ -67,10 +71,9 @@ const productsArr = [
   
   return (
   <>
-  
-  <Navbarr add={add} removehandler={removehandler} token={token}/>
+  <Gloablinfo.Provider value={{add:add,removehandler:removehandler,token:token}}> 
+  <Navbarr />
       <Container className="custom-container">
-        
         <div className="products-container">
           {productsArr.map((product, index) => (
             <div key={index} className="product-item">
@@ -82,6 +85,7 @@ const productsArr = [
           ))}
         </div>
       </Container>
+      </Gloablinfo.Provider>
 
 
 </>
