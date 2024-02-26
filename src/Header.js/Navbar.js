@@ -18,11 +18,11 @@ function Navbarr() {
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">E-commerce</Navbar.Brand>
+          <Navbar.Brand href="home">E-commerce</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#Store">Store</Nav.Link>
-            <Nav.Link href="#about">About</Nav.Link>
+            <Nav.Link href="home">Home</Nav.Link>
+            <Nav.Link href="Store">Store</Nav.Link>
+            <Nav.Link href="about">About</Nav.Link>
           </Nav>
           <Button variant="dark" onClick={toggleCart}>
             CART
@@ -30,6 +30,7 @@ function Navbarr() {
           <Badge bg="secondary">{token}</Badge>
         </Container>
       </Navbar>
+      
       <Cart show={show} toggleCart={toggleCart} />
     </>
   );

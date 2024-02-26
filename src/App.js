@@ -3,7 +3,10 @@ import './App.css';
 import Navbarr from './Header.js/Navbar';
 import Button from 'react-bootstrap/Button';
 import { useState,createContext } from 'react';
+import About from './Header.js/About';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 export const Gloablinfo=createContext();
+
 function App() {
 const [add,setadd]=useState([]);
 const [token,settoken]=useState(0)
@@ -72,7 +75,14 @@ const productsArr = [
   return (
   <>
   <Gloablinfo.Provider value={{add:add,removehandler:removehandler,token:token}}> 
-  <Navbarr />
+  <Router>
+          <Navbarr />
+          <Routes>
+            <Route path="/about" element={<About />} />
+           
+            
+          </Routes>
+        </Router>
       <Container className="custom-container">
         <div className="products-container">
           {productsArr.map((product, index) => (
