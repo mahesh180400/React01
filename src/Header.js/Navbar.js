@@ -18,9 +18,9 @@ function Navbarr() {
     <>
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="home">E-commerce</Navbar.Brand>
+          
           <Nav className="me-auto">
-            <Nav.Link href="home">Home</Nav.Link>
+          <Navbar.Brand href="home">Home</Navbar.Brand>
             <Nav.Link href="Store">Store</Nav.Link>
             <Nav.Link href="about">About</Nav.Link>
           </Nav>

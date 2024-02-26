@@ -37,6 +37,7 @@ function Cart({ show, toggleCart }) {
               <label>Price=</label>
               {item.price}
               <Button
+              
                 variant="dark"
                 style={{ borderRadius: '9px', paddingBottom: '2px', paddingTop: '2px' }}
                 onClick={() => removehandler(item.key)}

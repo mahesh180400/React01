@@ -1,10 +1,18 @@
 import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Image from 'react-bootstrap/Image';
+import Row from 'react-bootstrap/Row';
+
 const About=()=>{
     return<> 
     <Card>
       <Card.Header as="h5">About</Card.Header>
       <Card.Body>
         <Card.Title>About Us</Card.Title>
+        <Row>
+        <Col xs={6} md={4}>
+          <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwKyxKMDcW_gDUVwmINbYKO_bsH9HiKCqYhA&usqp=CAU" roundedCircle />
+        </Col>
         <Card.Text>
         Lorem ipsum carrots enhanced rebates. Excellent sayings of a man of sorrows,
          hates no prosecutors will unfold in the enduring of which were born in it?
@@ -25,7 +33,9 @@ importance to us that these are consequent to that question is answered, which w
 for the fault, it is often one of us, however, have any! Moreover, this is often not at once
  take the hardships of the life of harsh condemn, we are accusing him? Him whom something large cisterns.
         </Card.Text>
+        </Row>
       </Card.Body>
+    
     </Card>
     
     </>

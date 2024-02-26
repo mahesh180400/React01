@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { useState,createContext } from 'react';
 import About from './Header.js/About';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Home from './Header.js/Home';
 export const Gloablinfo=createContext();
 
 function App() {
@@ -79,22 +80,23 @@ const productsArr = [
           <Navbarr />
           <Routes>
             <Route path="/about" element={<About />} />
+            <Route path="/Store" element={ <Container className="custom-container">
+                       <div className="products-container">
+                      {productsArr.map((product, index) => (
+                      <div key={index} className="product-item">
+                      <img src={product.imageUrl} alt={product.title} />
+                      <h3>{product.title}</h3>
+                      <p>${product.price}</p>
+                      <Button variant="info" onClick={()=>addhandler(product)}>Add To Cart</Button>{' '}  
+                      </div>
+                          ))} </div>
+                      </Container>} />
+           <Route path="/home" element={<Home />} />
            
             
           </Routes>
         </Router>
-      <Container className="custom-container">
-        <div className="products-container">
-          {productsArr.map((product, index) => (
-            <div key={index} className="product-item">
-              <img src={product.imageUrl} alt={product.title} />
-              <h3>{product.title}</h3>
-              <p>${product.price}</p>
-              <Button variant="info" onClick={()=>addhandler(product)}>Add To Cart</Button>{' '}  
-            </div>
-          ))}
-        </div>
-      </Container>
+     
       </Gloablinfo.Provider>
 
 
