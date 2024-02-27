@@ -1,106 +1,35 @@
-import Container from 'react-bootstrap/Container';
+import React from 'react';
+
+import MoviesList from './components/MoviesList';
 import './App.css';
-import Navbarr from './Header.js/Navbar';
-import Button from 'react-bootstrap/Button';
-import { useState,createContext } from 'react';
-import About from './Header.js/About';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Home from './Header.js/Home';
-export const Gloablinfo=createContext();
-
+import { useState } from 'react';
 function App() {
-const [add,setadd]=useState([]);
-const [token,settoken]=useState(0)
-const addhandler=(product)=>{
-  const isproduct=add.some((item)=>item.title===product.title);
-  if(isproduct){
-    alert("Product is Already Added!")
-  }else{
-  let newtoken=token+1
-  settoken(newtoken++)
-  setadd((prev) => [...prev, { ...product, key: token}]);
-  }
-}
-;
-const removehandler=(key)=>{
-  let newtoken=token-1
-  settoken(newtoken)
-  setadd((prev) => prev.filter((item) => item.key !== key));
-}
-    
-const productsArr = [
+  const [movies,setmovies]=useState([])
+ function fetchMoviesHandler(){
+  fetch('https://swapi.dev/api/films/').then((response)=>{
+   return  response.json();
+  }).then((data)=>{
+    const transformedMovies=data.results.map(moviedata=>{
+      return {
+        id:moviedata.episode_id,
+        title:moviedata.title,
+        openingText:moviedata.opening_crawl,
+        releaseDate:moviedata.release_date
+      }
+    })
+    setmovies(transformedMovies);
+  })
+ }
 
-  {
-  
-  title: 'Colors',
-  
-  price: 100,
-  
-  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
-  
-  },
-  
-  {
-  
-  title: 'Black and white Colors',
-  
-  price: 50,
-  
-  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
-  
-  },
-  
-  {
-  
-  title: 'Yellow and Black Colors',
-  
-  price: 70,
-  
-  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%203.png',
-  
-  },
-  
-  {
-  
-  title: 'Blue Color',
-  
-  price: 100,
-  
-  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%204.png',
-  
-  }
-  
-  ]
-  
-  
   return (
-  <>
-  <Gloablinfo.Provider value={{add:add,removehandler:removehandler,token:token}}> 
-  <Router>
-          <Navbarr />
-          <Routes>
-            <Route path="/about" element={<About />} />
-            <Route path="/Store" element={ <Container className="custom-container">
-                       <div className="products-container">
-                      {productsArr.map((product, index) => (
-                      <div key={index} className="product-item">
-                      <img src={product.imageUrl} alt={product.title} />
-                      <h3>{product.title}</h3>
-                      <p>${product.price}</p>
-                      <Button variant="info" onClick={()=>addhandler(product)}>Add To Cart</Button>{' '}  
-                      </div>
-                          ))} </div>
-                      </Container>} />
-           <Route path="/home" element={<Home />} />
-           
-            
-          </Routes>
-        </Router>
-     
-      </Gloablinfo.Provider>
-
-
-</>
+    <React.Fragment>
+      <section>
+        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
+      </section>
+      <section>
+        <MoviesList movies={movies} />
+      </section>
+    </React.Fragment>
   );
 }
 
