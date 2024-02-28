@@ -20,9 +20,10 @@ function Navbarr() {
         <Container>
           
           <Nav className="me-auto">
-          <Navbar.Brand href="home">Home</Navbar.Brand>
-            <Nav.Link href="Store">Store</Nav.Link>
+          <Navbar.Brand href="/">Home</Navbar.Brand>
+            <Nav.Link href="/store">Store</Nav.Link>
             <Nav.Link href="about">About</Nav.Link>
+            <Nav.Link href="contact">Contact US</Nav.Link>
           </Nav>
           <Button variant="dark" onClick={toggleCart}>
             CART

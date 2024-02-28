@@ -1,99 +1,116 @@
-import React, { useCallback } from 'react';
-import Form from './components/Form';
-import MoviesList from './components/MoviesList';
+import Container from 'react-bootstrap/Container';
 import './App.css';
-import { useState,useEffect } from 'react';
+import Navbarr from './Header.js/Navbar';
+import Button from 'react-bootstrap/Button';
+import { useState,createContext } from 'react';
+import About from './Header.js/About';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Home from './Header.js/Home';
+import Contact from './Header.js/Contact';
+import ProductDetails from './Header.js/ProductDetails';
+import { Link} from 'react-router-dom';
+export const Gloablinfo=createContext();
+
+
 function App() {
-  const [movies,setmovies]=useState([]);
-  const [isloading,setisloading]=useState(false);
-  const [error,seterror]=useState(null);
-
-
-const addmoviesHandler= async(newData)=>{
- const response=await fetch('https://desire-acb3b-default-rtdb.firebaseio.com/movies.json',{
-  method:'POST',
-  body:JSON.stringify(newData),
-  header:{
-    'Content-type':'application/json'
+const [add,setadd]=useState([]);
+const [token,settoken]=useState(0)
+const addhandler=(product)=>{
+  const isproduct=add.some((item)=>item.title===product.title);
+  if(isproduct){
+    alert("Product is Already Added!")
+  }else{
+  let newtoken=token+1
+  settoken(newtoken++)
+  setadd((prev) => [...prev, { ...product, key: token}]);
   }
-});
-const data=await response.json();
-console.log(data);
 }
-
-const handleDelete=async(movieId)=>{
-  const response = await fetch(`https://desire-acb3b-default-rtdb.firebaseio.com/movies/${movieId}.json`, {
-    method: 'DELETE',
-    headers: {
-      'Content-type': 'application/json',
-    },
-  });
-
-  const data = await response.json();
-  console.log(data);
-  const updateMovies=movies.filter((movie)=>movie.id!==movieId)
-  setmovies(updateMovies)
+;
+const removehandler=(key)=>{
+  let newtoken=token-1
+  settoken(newtoken)
+  setadd((prev) => prev.filter((item) => item.key !== key));
 }
-
-
- const fetchMoviesHandler =useCallback(async()=>{
-    setisloading(true);
-    seterror(null);
-    try{
-      
-  const response= await fetch('https://desire-acb3b-default-rtdb.firebaseio.com/movies.json')
-  if(!response.ok){
-    throw new Error('Something went wrong!...Retrying')
-   
-  };
-   const data=await response.json();
-   const loadedmovies=[];
-   for(const key in data){
-    loadedmovies.push({
-      id:key,
-      title:data[key].title,
-      openingText:data[key].openingText,
-      releaseDate:data[key].releaseDate,
-    })
-   }
-
     
-    setmovies(loadedmovies);
-    setisloading(false);
+const productsArr = [
+
+  {
+  productId:'p1',
+
+  title: 'Colors',
   
- }catch(error){
-  seterror(error.message)
- }
- setisloading(false)
-    },[]);
-
-    useEffect(()=>{
-      fetchMoviesHandler()
-    },[fetchMoviesHandler])
-    
-
-    let content=<p>Found no movies.</p>;
-    if(movies.length>0)
-    {
-      content=<MoviesList movies={movies} onDelete={handleDelete}/>;
-    };
-    if(error){
-      content=<p>{error}</p>
-    };
-    if(isloading)
-    {
-      content=<p>Loading....</p>
-    }
+  price: 100,
+  
+  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
+  
+  },
+  
+  {
+    productId:'p2',
+  
+  title: 'Black and white Colors',
+  
+  price: 50,
+  
+  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
+  
+  },
+  
+  {
+    productId:'p3',
+  
+  title: 'Yellow and Black Colors',
+  
+  price: 70,
+  
+  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%203.png',
+  
+  },
+  
+  {
+    productId:'p4',
+  
+  title: 'Blue Color',
+  
+  price: 100,
+  
+  imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%204.png',
+  
+  }
+  
+  ]
+  
+  
   return (
-    <React.Fragment>
-      <section>
-        <div><Form addmoviesHandler={addmoviesHandler}></Form></div>
-        <button onClick={fetchMoviesHandler}>Fetch Movies</button>
-      </section>
-      <section>
-      {content}
-      </section>
-    </React.Fragment>
+  <>
+  <Gloablinfo.Provider value={{add:add,removehandler:removehandler,token:token}}> 
+  <Router>
+          <Navbarr />
+          <Routes>
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/store" element={ <Container className="custom-container">
+                       <div className="products-container">
+                      {productsArr.map((product, index) => (
+                      <div key={index} className="product-item">
+                     <Link to={`/store/${product.productId}`}>
+                      <img src={product.imageUrl} alt={product.title} />
+                      <h3>{product.title}</h3>
+                      <p>${product.price}</p>
+                      <Button variant="info" onClick={()=>addhandler(product)}>Add To Cart</Button>{' '}  
+                      </Link>
+                      </div>
+                          ))} </div>
+                      </Container>} />
+           <Route path="" element={<Home />} />
+           <Route path="/store/:productID" element={<ProductDetails productsArr={productsArr}/>} />
+            </Routes>
+        </Router>
+     
+      </Gloablinfo.Provider>
+
+
+</>
   );
 }
 
