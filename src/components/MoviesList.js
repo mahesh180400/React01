@@ -18,7 +18,7 @@ const MovieList = (props) => {
           title={movie.title}
           releaseDate={movie.releaseDate}
           openingText={movie.openingText}
-          onDelete={handledelete}
+          onDelete={()=>handledelete(movie.id)}
         />
       ))}
     </ul>

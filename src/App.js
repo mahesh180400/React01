@@ -21,8 +21,16 @@ const data=await response.json();
 console.log(data);
 }
 
-const handleDelete=(movieId)=>{
-  console.log('Badhai ho Badhai',movieId)
+const handleDelete=async(movieId)=>{
+  const response = await fetch(`https://desire-acb3b-default-rtdb.firebaseio.com/movies/${movieId}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  console.log(data);
   const updateMovies=movies.filter((movie)=>movie.id!==movieId)
   setmovies(updateMovies)
 }
