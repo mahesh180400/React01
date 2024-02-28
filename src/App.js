@@ -9,28 +9,48 @@ function App() {
   const [error,seterror]=useState(null);
 
 
+const addmoviesHandler= async(newData)=>{
+ const response=await fetch('https://desire-acb3b-default-rtdb.firebaseio.com/movies.json',{
+  method:'POST',
+  body:JSON.stringify(newData),
+  header:{
+    'Content-type':'application/json'
+  }
+});
+const data=await response.json();
+console.log(data);
+}
+
+const handleDelete=(movieId)=>{
+  console.log('Badhai ho Badhai',movieId)
+  const updateMovies=movies.filter((movie)=>movie.id!==movieId)
+  setmovies(updateMovies)
+}
+
+
  const fetchMoviesHandler =useCallback(async()=>{
     setisloading(true);
     seterror(null);
     try{
       
-  const response= await fetch('https://swapi.dev/api/films/')
+  const response= await fetch('https://desire-acb3b-default-rtdb.firebaseio.com/movies.json')
   if(!response.ok){
     throw new Error('Something went wrong!...Retrying')
    
   };
    const data=await response.json();
-  const transformedMovies=data.results.map(moviedata=>{
-      return {
-        id:moviedata.episode_id,
-        title:moviedata.title,
-        openingText:moviedata.opening_crawl,
-        releaseDate:moviedata.release_date
-      }
+   const loadedmovies=[];
+   for(const key in data){
+    loadedmovies.push({
+      id:key,
+      title:data[key].title,
+      openingText:data[key].openingText,
+      releaseDate:data[key].releaseDate,
     })
+   }
 
     
-    setmovies(transformedMovies);
+    setmovies(loadedmovies);
     setisloading(false);
   
  }catch(error){
@@ -47,7 +67,7 @@ function App() {
     let content=<p>Found no movies.</p>;
     if(movies.length>0)
     {
-      content=<MoviesList movies={movies} />;
+      content=<MoviesList movies={movies} onDelete={handleDelete}/>;
     };
     if(error){
       content=<p>{error}</p>
@@ -59,7 +79,7 @@ function App() {
   return (
     <React.Fragment>
       <section>
-        <div><Form></Form></div>
+        <div><Form addmoviesHandler={addmoviesHandler}></Form></div>
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>

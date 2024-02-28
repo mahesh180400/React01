@@ -1,6 +1,6 @@
 import { useState } from "react";
 import './Form.module.css'
-const Form=()=>{
+const Form=(props)=>{
     const [title,settitle]=useState('');
     const [optext,setoptext]=useState('');
     const [date,setdate]=useState('');
@@ -11,6 +11,7 @@ const Form=()=>{
         optext,
         date
        };
+       props.addmoviesHandler(newData)
        console.log(newData,'Lala aya hai');
        setdate('');
        settitle('');
