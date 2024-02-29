@@ -16,40 +16,49 @@ const AuthForm = () => {
     event.preventDefault();
     const enteredEmail=emailInputref.current.value;
     const enteredpass=passwordInputref.current.value;
-    setisloading(true)
+    setisloading(true);
+    let url;
     if(isLogin){
+      url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck'
+
 
     }else{
-      fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck',
-      {
-        method:'POST',
-        body:JSON.stringify({
-          email:enteredEmail,
-          password:enteredpass,
-          returnSecureToken:true
-        }),
-        headers:{
-          'Content-type':'application.json'
-        }
+      url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck'
+     
+    } fetch(url ,
+    {
+      method:'POST',
+      body:JSON.stringify({
+        email:enteredEmail,
+        password:enteredpass,
+        returnSecureToken:true
+      }),
+      headers:{
+        'Content-type':'application.json'
       }
-      ).then((res)=>{
-        setisloading(false)
-        if(res.ok){
-
-        }else{
-        return res.json().then((data)=>{
-            let errorMessage='Authentication failed!';
-           /* if(data && data.error&&data.error.message)
-            {
-              errorMessage=data.error.message
-            }
-            */
-            alert(errorMessage)
-          })
-        }
-      }
-      )
     }
+    ).then((res)=>{
+      setisloading(false)
+      if(res.ok){
+        return res.json()
+      }else{
+      return res.json().then((data)=>{
+          let errorMessage='Authentication failed!';
+         /* if(data && data.error&&data.error.message)
+          {
+            errorMessage=data.error.message
+          }
+          */
+          
+          throw new Error(errorMessage)
+        })
+      }
+    }).then((data)=>{
+      console.log(data)
+    })
+    .catch((err)=>{
+      alert(err.message)
+    })
   }
 
 
