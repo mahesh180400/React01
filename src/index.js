@@ -1,12 +1,19 @@
-import ReactDOM from 'react-dom/client';
+import React from 'react';
+import { createRoot } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-
-import './index.css';
 import App from './App';
+import { AuthContextProvider } from './store/auth-context';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootElement = document.getElementById('root');
+
+// Use createRoot from "react-dom"
+const root = createRoot(rootElement);
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <React.StrictMode>
+    <AuthContextProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthContextProvider>
+  </React.StrictMode>
 );
