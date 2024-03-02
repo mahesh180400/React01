@@ -10,10 +10,16 @@ export const AuthContextProvider=(props)=>{
     const initialtoken=localStorage.getItem('token');
     const [token,settoken]=useState(initialtoken);
     const userIsLoggedIn= !!token;
+
     const loginHandler=(token)=>{
         settoken(token)
-        localStorage.setItem('token',token)
+        localStorage.setItem('token',token);
+        setTimeout(()=>{
+            logoutHandler();
+            console.log('TATA BYE BYE KHATAM')
+        },5000)
     };
+
     const logoutHandler=()=>{
         settoken(null);
         localStorage.removeItem('token');
