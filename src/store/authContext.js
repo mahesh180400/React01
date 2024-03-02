@@ -1,35 +1,37 @@
-import React,{useState,useEffect}from "react";
+import React, { useState } from "react";
 const AuthContext=React.createContext({
+    token:"",
     isLoggedIn:false,
-    onLogout:()=>{},
-    onLogin:(email,password)=>{}
+    login:(token)=>{},
+    logout:()=>{}
 });
- export const AuthContextProvider=(props)=>{
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
 
-    useEffect(()=>{
-        const StoredUserLoggedInformation=localStorage.getItem('isLoggedIn')
-      if(StoredUserLoggedInformation==='1')
-      {
-        setIsLoggedIn(true)
-      }
-    },  [] )
+export const AuthContextProvider=(props)=>{
+    const initialtoken=localStorage.getItem('token');
+    const [token,settoken]=useState(initialtoken);
+    const userIsLoggedIn= !!token;
 
-
+    const loginHandler=(token)=>{
+        settoken(token)
+        localStorage.setItem('token',token);
+        setTimeout(()=>{
+            logoutHandler();
+            console.log('TATA BYE BYE KHATAM')
+        },5000)
+    };
 
     const logoutHandler=()=>{
-        localStorage.removeItem('isLoggedIn')
-        setIsLoggedIn(false);
+        settoken(null);
+        localStorage.removeItem('token');
     };
-    const loginHandler=()=>{
-        localStorage.setItem('isLoggedIn','1')
-        setIsLoggedIn(true)
+    const contextValue={
+        token:token,
+        isLoggedIn:userIsLoggedIn,
+        login:loginHandler,
+        logout:logoutHandler
     }
-    return <AuthContext.Provider value={{
-        isLoggedIn:isLoggedIn,
-        onLogout:logoutHandler,
-        onLogin:loginHandler,
-    }
-    }>{props.children}</AuthContext.Provider>
-}
+    return( <AuthContext.Provider value={contextValue}> 
+        {props.children}
+    </AuthContext.Provider>)
+};
 export default AuthContext;
