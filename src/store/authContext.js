@@ -17,7 +17,7 @@ export const AuthContextProvider=(props)=>{
         setTimeout(()=>{
             logoutHandler();
             console.log('TATA BYE BYE KHATAM')
-        },5000)
+        },60*1000)
     };
 
     const logoutHandler=()=>{

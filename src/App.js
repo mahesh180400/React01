@@ -8,14 +8,14 @@ import {Redirect, Switch,Route} from 'react-router-dom';
 import Home from './Header.js/Home';
 import Contact from './Header.js/Contact';
 import ProductDetails from './Header.js/ProductDetails';
-
+import { useContext } from 'react';
 import AuthForm from './Header.js/AuthForm';
 import { Link} from 'react-router-dom';
-export const Gloablinfo=createContext();
-
-
+import AuthContext, { AuthContextProvider } from './store/authcontext';
+export const Gloablinfo=createContext(AuthContextProvider);
 function App() {
-  
+const authctx=useContext(AuthContext)
+const all= !authctx.isLoggedIn && console.log("No NO")
 const [add,setadd]=useState([]);
 const [token,settoken]=useState(0)
 const addhandler=(product)=>{
@@ -87,14 +87,12 @@ const productsArr = [
   return (
   <>
   <Gloablinfo.Provider value={{add:add,removehandler:removehandler,token:token}}> 
-  
-          <Navbarr />
-          
+      <Navbarr />
           <Switch>
            <Route path="/about" exact component={About} />
           <Route path="/login" exact  component={AuthForm} />
            <Route path="/contact" exact component={Contact} />  
-            <Route
+           {!authctx.isLoggedIn && <Route
               path="/store" exact 
               render={() => (
                 <Container className="custom-container">
@@ -114,11 +112,32 @@ const productsArr = [
                   </div>
                 </Container>
               )}
-            /> 
-             <Route path="/" exact component={Home} />
+            > <Redirect to='/login'></Redirect></Route>}
+            {authctx.isLoggedIn&&<Route
+              path="/store" exact 
+              render={() => (
+                <Container className="custom-container">
+                  <div className="products-container">
+                    {productsArr.map((product, index) => (
+                      <div key={index} className="product-item">
+                        <Link to={`/${product.productId}`}>
+                          <img src={product.imageUrl} alt={product.title} />
+                          <h3>{product.title}</h3>
+                          <p>${product.price}</p>
+                          <Button variant="info" onClick={() => addhandler(product)}>
+                            Add To Cart
+                          </Button>{' '}
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </Container>
+              )}
+            ></Route>}
+               <Route path="/" exact component={Home} />
              <Route path="/:productID" exact render={(props) => <ProductDetails {...props} productsArr={productsArr} />} />
             <Route path='*'>
-          <Redirect to='login'></Redirect>
+          <Redirect to='/login'></Redirect>
         </Route>
           
             

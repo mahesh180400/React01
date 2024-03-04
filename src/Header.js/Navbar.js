@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import { Gloablinfo } from '../App';
 import Cart from './Cart';
 
@@ -16,16 +16,14 @@ function Navbarr() {
 
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark">
+      <Navbar bg="dark" variant="dark">
         <Container>
-          
-          <Nav className="me-auto">
-          <Navbar.Brand href="/">Home</Navbar.Brand>
-            <Nav.Link href="/store">Store</Nav.Link>
-            <Nav.Link href="about">About</Nav.Link>
-            <Nav.Link href="login">Login</Nav.Link>
-            <Nav.Link href="contact">Contact US</Nav.Link>
-          </Nav>
+          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+          <Link to="/store" className="nav-link" style={{ color: 'white' }}>Store</Link>
+            <Link to="/about" className="nav-link" style={{ color: 'white' }}>About</Link>
+            <Link to="/login" className="nav-link" style={{ color: 'white' }}>Login</Link>
+            <Link to="/contact" className="nav-link" style={{ color: 'white' }}>Contact US</Link>
+
           <Button variant="dark" onClick={toggleCart}>
             CART
           </Button>
