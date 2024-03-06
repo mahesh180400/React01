@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { useContext,useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
+import axios from 'axios';
 import { Gloablinfo } from '../App';
-
+import AuthContext from '../store/authcontext';
 function Cart({ show, toggleCart }) {
-  const { add, removehandler, token } = React.useContext(Gloablinfo);
+  const authctx=useContext(AuthContext)
+  const {  removehandler, token } = React.useContext(Gloablinfo);
+  const [cartData, setCartData] = useState([]);
+  
+  const emailid=authctx.newEmail;
+  const indexOfAt = emailid.indexOf('@');
+const substringResult = emailid.slice(0 ,indexOfAt);
+console.log(substringResult)
+  useEffect(() => {
+    // Fetch cart data when the component mounts
+    const fetchData = async () => {
+      
+      try {
+        
+        const response = await axios.get(`https://crudcrud.com/api/fbed444f7efb438683f1a809489495ed/cart${substringResult}`);
+        setCartData(response.data);
+      } catch (error) {
+        console.error('Error fetching cart data:', error.message);
+      }
+    };
+
+    fetchData(); 
+  }, [substringResult]); 
+
+
+
+  // Check if cartData is an array before mapping over it
+  if (!Array.isArray(cartData)) {
+    console.error('cartData is not an array:', cartData);
+    return null; // You can return a placeholder or handle the error appropriately
+  }
 
   return (
     <Modal show={show} onHide={toggleCart}>
@@ -14,8 +45,8 @@ function Cart({ show, toggleCart }) {
       </Modal.Header>
       <Modal.Body>
         <Container>
-          {add.map((item) => (
-            <div key={item.key} style={{ marginBottom: '10px', borderBottom: '1px solid #ddd' }}>
+          {cartData.map((item) => (
+            <div key={Math.random().toString()} style={{ marginBottom: '10px', borderBottom: '1px solid #ddd' }}>
               <img
                 src={item.imageUrl}
                 alt={item.title}
@@ -37,10 +68,9 @@ function Cart({ show, toggleCart }) {
               <label>Price=</label>
               {item.price}
               <Button
-              
                 variant="dark"
                 style={{ borderRadius: '9px', paddingBottom: '2px', paddingTop: '2px' }}
-                onClick={() => removehandler(item.key)}
+                onClick={() => removehandler(item.id)}
               >
                 Remove
               </Button>

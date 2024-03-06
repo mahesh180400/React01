@@ -50,6 +50,7 @@ const AuthForm = () => {
       }
     }).then((data)=>{
       authctx.login(data.idToken)
+      authctx.setNewEmail(enteredEmail)
       history.replace('/store')
     })
     .catch((err)=>{

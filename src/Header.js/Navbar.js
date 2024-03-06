@@ -18,7 +18,7 @@ function Navbarr() {
     <>
       <Navbar bg="dark" variant="dark">
         <Container>
-          <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/home">Home</Navbar.Brand>
           <Link to="/store" className="nav-link" style={{ color: 'white' }}>Store</Link>
             <Link to="/about" className="nav-link" style={{ color: 'white' }}>About</Link>
             <Link to="/login" className="nav-link" style={{ color: 'white' }}>Login</Link>

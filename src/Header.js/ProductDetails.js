@@ -2,8 +2,6 @@ import { useParams } from 'react-router-dom';
 
 const ProductDetails = ({ productsArr }) => {
   const { productID } = useParams();
-  console.log(productID)
-
   // Find the product with the matching productId
   const selectedProduct = productsArr.find(product => product.productId === productID);
 
