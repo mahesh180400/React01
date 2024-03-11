@@ -17,7 +17,8 @@ export const AuthContextProvider=(props)=>{
         setTimeout(()=>{
             logoutHandler();
             console.log('TATA BYE BYE KHATAM')
-        },5000)
+        },50000);
+        console.log('Login Function is CAlled!')
     };
 
     const logoutHandler=()=>{

@@ -1,14 +1,17 @@
 import { useState,useContext } from 'react';
 import styles from './Signup.module.css';
 import AuthContext from '../Store/authcontext';
+import { useNavigate } from 'react-router-dom';
 const Signup = () => {
 const authctx=useContext(AuthContext);
+const navigate=useNavigate();
   const [email, setemail] = useState('');
   const [pass, setpass] = useState('');
   const [conpass, setconpass] = useState('');
   const [islogin, setislogin] = useState(true);
   const [isloading,setisloading]=useState(false);
-
+  
+  
   const swithAuthmodeHandler=()=>{
     setislogin((prev)=>!prev)
   }
@@ -52,7 +55,8 @@ const authctx=useContext(AuthContext);
      }
    }).then((data)=>{
     authctx.login(data.idToken)
-    console.log('All OK')
+    navigate('/profile_edit')
+    console.log('All OK',data.idToken)
    })
    .catch((err)=>{
     alert(err.message)
@@ -69,6 +73,7 @@ const authctx=useContext(AuthContext);
   };
 
   return (
+    <>
     <div className={styles.container}>
       <h2>{islogin?"LogIn":"SignUP"}</h2>
       <label>Email:</label>
@@ -106,7 +111,8 @@ const authctx=useContext(AuthContext);
         </button>
       </p>
     </div>
+    </>
   );
-};
+}
 
 export default Signup;
