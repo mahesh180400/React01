@@ -1,9 +1,41 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import styles from './ProfileEdit.module.css';
 const ProfileEdit = () => {
   const [update, setUpdate] = useState(false);
   const [name, setname] = useState('');
   const [profile, setprofile] = useState('');
+
+  useEffect(()=>{
+    const tokenold=localStorage.getItem('token')
+let newurl="https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck"
+fetch(newurl,{
+    method:'POST',
+    body:JSON.stringify({
+    idToken:tokenold,
+    })
+   }).then((res)=>{
+    if(res.ok){
+      return res.json();
+
+    }else{
+        return res.json().then ((data)=>{
+         let errorMessage="Fetching Profile Data FAiled!";
+        throw new Error(errorMessage)
+        })
+     }
+   }).then((data)=>{
+    const displayName = data.users[0]?.displayName;
+    const photoUrl = data.users[0]?.providerUserInfo[0]?.photoUrl;
+    console.log('DisplayName:', displayName);
+    console.log('PhotoUrl:', photoUrl);
+    setname(displayName);
+    setprofile(photoUrl)
+    console.log('All OK Profile',data)
+   })
+   .catch((err)=>{
+    alert(err.message)
+   })
+  },[])
 
   const edit = (e) => {
     e.preventDefault();
