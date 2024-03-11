@@ -1,21 +1,35 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import styles from './Signup.module.css';
-
+import AuthContext from '../Store/authcontext';
 const Signup = () => {
+const authctx=useContext(AuthContext);
   const [email, setemail] = useState('');
   const [pass, setpass] = useState('');
   const [conpass, setconpass] = useState('');
-  const [isSignup, setisSignup] = useState(true);
+  const [islogin, setislogin] = useState(true);
+  const [isloading,setisloading]=useState(false);
+
+  const swithAuthmodeHandler=()=>{
+    setislogin((prev)=>!prev)
+  }
 
   const handlesign = (e) => {
     e.preventDefault();
-    if(pass!==conpass)
+    setisloading(true)
+    
+    let url;
+    if(islogin)
     {
-        alert("password and confirm password is not match")
-        return 
-    };
-    let url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck'
-   fetch(url,{
+        url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck'
+    }else{
+        if(pass!==conpass)
+        {   setisloading(false)
+            alert("password and confirm password is not match")
+            return 
+        }
+        url= 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck'
+    }
+    fetch(url,{
     method:'POST',
     body:JSON.stringify({
         email:email,
@@ -26,13 +40,21 @@ const Signup = () => {
         'Content-type':'application.json'
     }
    }).then((res)=>{
+    setisloading(false)
     if(res.ok){
-        console.log('User Signup Successfuly')
+      return res.json();
+
     }else{
-        let errorMessage="Authentication FAiled!";
+        return res.json().then ((data)=>{
+         let errorMessage="Authentication FAiled!";
         throw new Error(errorMessage)
-    }
-   }).catch((err)=>{
+        })
+     }
+   }).then((data)=>{
+    authctx.login(data.idToken)
+    console.log('All OK')
+   })
+   .catch((err)=>{
     alert(err.message)
    })
    
@@ -48,35 +70,39 @@ const Signup = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Sign Up</h2>
+      <h2>{islogin?"LogIn":"SignUP"}</h2>
       <label>Email:</label>
       <input
         type="email"
-        value={email}
-        onChange={(e) => setemail(e.target.value)}
         required
+        value={email}
+        onChange={(e) => setemail(e.target.value)} 
       ></input>
-      <label>Password:</label>
-      <input
+    
+     {!islogin&& (<>
+       <label>Password:</label>
+     <input
         type="password"
+        required
         value={pass}
         onChange={(e) => setpass(e.target.value)}
         minLength={6}
-        required
-      ></input>
+      ></input></>)} 
       <label>Confirm Password:</label>
       <input
         type="password"
+        required
         value={conpass}
         onChange={(e) => setconpass(e.target.value)}
         minLength={6}
-        required
       ></input>
-      <button onClick={handlesign}>Sign Up</button>
-      <p>
-        Have an Account ?{' '}
-        <button className={styles.secondary}>
-          {isSignup ? 'Login' : 'Sign Up'}
+      {!isloading&& <button onClick={handlesign}>{islogin?"login":"Sign Up"}</button>}
+      {isloading && <p>Sending request....</p>}
+      <p>Have an Account ?{' '}
+        <button className={styles.secondary}
+        onClick={swithAuthmodeHandler}
+        >
+          {!islogin ? 'Login' : 'Sign Up'}
         </button>
       </p>
     </div>
