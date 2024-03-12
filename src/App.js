@@ -9,6 +9,7 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="*" element={<Signup></Signup>}></Route>
           <Route path="" element={<Signup />} />
           <Route path="/profile_edit" element={<ProfileEdit></ProfileEdit>} />
           <Route path="/main" element={<Main></Main>}/>

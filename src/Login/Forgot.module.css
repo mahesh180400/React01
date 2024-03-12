@@ -1,0 +1,48 @@
+/* Forgot.module.css */
+
+.ForgotPasswordContainer {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    text-align: center;
+  }
+  
+  .ForgotPasswordContainer h2 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .ForgotPasswordInput {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .ForgotPasswordButton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .ForgotPasswordButton:hover {
+    background-color: #45a049;
+  }
+
+  .LoginLink {
+    color: #fa04a0;
+    font-size: medium;
+    cursor: pointer;
+  }
+
+  .LoginLink:hover {
+    text-decoration: underline;
+  }

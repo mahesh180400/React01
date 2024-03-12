@@ -105,7 +105,9 @@ const navigate=useNavigate();
       ></input>
      {!isloading&& <button onClick={handlesign}>{islogin?"login":"Sign Up"}</button>}
       {isloading && <p>Sending request....</p>}
-      <Link to="/forgot_password">Forgot Password ?</Link>
+      <div className={styles.forgotPasswordLink}>
+          <Link to="/forgot_password">Forgot Password?</Link>
+        </div>
       <p>Have an Account ?{' '}
         <button className={styles.secondary}
         onClick={swithAuthmodeHandler}
