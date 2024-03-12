@@ -1,5 +1,6 @@
 import { useState,useContext } from 'react';
 import styles from './Signup.module.css';
+import { Link } from 'react-router-dom';
 import AuthContext from '../Store/authcontext';
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
@@ -86,7 +87,7 @@ const navigate=useNavigate();
       ></input>
     
      {!islogin&& (<>
-       <label>Password:</label>
+       <label>New Password:</label>
      <input
         type="password"
         required
@@ -94,7 +95,7 @@ const navigate=useNavigate();
         onChange={(e) => setpass(e.target.value)}
         minLength={6}
       ></input></>)} 
-      <label>Confirm Password:</label>
+     <label>{!islogin?"Confirm Password":"Password"}</label>
       <input
         type="password"
         required
@@ -102,8 +103,9 @@ const navigate=useNavigate();
         onChange={(e) => setconpass(e.target.value)}
         minLength={6}
       ></input>
-      {!isloading&& <button onClick={handlesign}>{islogin?"login":"Sign Up"}</button>}
+     {!isloading&& <button onClick={handlesign}>{islogin?"login":"Sign Up"}</button>}
       {isloading && <p>Sending request....</p>}
+      <Link to="/forgot_password">Forgot Password ?</Link>
       <p>Have an Account ?{' '}
         <button className={styles.secondary}
         onClick={swithAuthmodeHandler}
