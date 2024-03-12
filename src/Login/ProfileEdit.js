@@ -1,9 +1,11 @@
 import React, { useState,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import styles from './ProfileEdit.module.css';
 const ProfileEdit = () => {
   const [update, setUpdate] = useState(false);
   const [name, setname] = useState('');
   const [profile, setprofile] = useState('');
+  const navigate=useNavigate()
 
   useEffect(()=>{
     const tokenold=localStorage.getItem('token')
@@ -101,7 +103,8 @@ const ProfileEdit = () => {
             })
          }
        }).then((data)=>{
-        console.log('All OK Profile')
+        console.log('All OK Profile');
+        navigate('/main')
        })
        .catch((err)=>{
         alert(err.message)
@@ -131,7 +134,7 @@ const ProfileEdit = () => {
             Cancel
           </button>
           <div>
-          <label>Verify Email Id:</label>
+          <strong>Verify Email Id:</strong>
           <button onClick={verifyemail}>Verify</button></div>
           <label>Full Name:</label>
           <input

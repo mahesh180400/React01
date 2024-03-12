@@ -55,8 +55,9 @@ const navigate=useNavigate();
      }
    }).then((data)=>{
     authctx.login(data.idToken)
-    navigate('/profile_edit')
-    console.log('All OK',data.idToken)
+  islogin?navigate('/profile_edit'):navigate("");
+    console.log('All OK',data.idToken);
+    swithAuthmodeHandler()
    })
    .catch((err)=>{
     alert(err.message)
