@@ -1,6 +1,7 @@
-import { useContext, useState } from 'react';
+import { useContext, useState,useEffect } from 'react';
 import styles from './Main.module.css';
 import AuthContext from '../Store/authcontext';
+
 
 const Main = () => {
   const [money, setMoney] = useState('');
@@ -14,6 +15,41 @@ const Main = () => {
     authctx.logout();
   };
 
+  
+  useEffect(()=>{
+    let newurl="https://desire-acb3b-default-rtdb.firebaseio.com/userdata.json"
+    fetch(newurl,{
+    method:'GET',
+   }).then((res)=>{
+    if(res.ok){
+      return res.json();
+    }else{
+        return res.json().then ((data)=>{
+         let errorMessage="Fetching list Data FAiled!";
+        throw new Error(errorMessage)
+        })
+     }
+   }).then((data)=>{
+    
+    const newdata=Object.values(data)
+    setExpenses(newdata)
+    console.log(newdata)
+   })
+   .catch((err)=>{
+    alert(err.message)
+   })
+  },[])
+
+
+
+
+
+
+
+
+
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -24,6 +60,41 @@ const Main = () => {
         category,
       };
       setExpenses([...expenses, newExpense]);
+
+      let url="https://desire-acb3b-default-rtdb.firebaseio.com/userdata.json"
+      fetch(url,{
+        method:'POST',
+        body:JSON.stringify({
+           Money:money,
+           Description:description,
+           Category:category,
+        }),
+        headers:{
+            'Content-type':'application.json'
+        }
+       }).then((res)=>{
+        if(res.ok){
+          return res.json();
+    
+        }else{
+            return res.json().then ((data)=>{
+             let errorMessage="Uploading FAiled!";
+            throw new Error(errorMessage)
+            })
+         }
+       }).then((data)=>{
+        console.log('All OK',data);
+       })
+       .catch((err)=>{
+        alert(err.message)
+       })
+       
+
+
+
+
+
+
       setMoney('');
       setDescription('');
       setCategory('Select');
@@ -54,10 +125,10 @@ const Main = () => {
       <div>
         <h2>Expense List</h2>
         <ul>
-          {expenses.map((expense, index) => (
+          {Array.isArray(expenses) && expenses.map((expense, index) => (
             <li key={index}>
-              <strong>Money:</strong> {expense.money}, <strong>Description:</strong>{' '}
-              {expense.description}, <strong>Category:</strong> {expense.category}
+              <strong>Money:</strong> {expense.Money}, <strong>Description:</strong>{' '}
+              {expense.Description}, <strong>Category:</strong> {expense.Category}
             </li>
           ))}
         </ul>
