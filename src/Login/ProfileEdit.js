@@ -7,8 +7,8 @@ const ProfileEdit = () => {
 
   useEffect(()=>{
     const tokenold=localStorage.getItem('token')
-let newurl="https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck"
-fetch(newurl,{
+    let newurl="https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck"
+    fetch(newurl,{
     method:'POST',
     body:JSON.stringify({
     idToken:tokenold,
@@ -16,7 +16,6 @@ fetch(newurl,{
    }).then((res)=>{
     if(res.ok){
       return res.json();
-
     }else{
         return res.json().then ((data)=>{
          let errorMessage="Fetching Profile Data FAiled!";
@@ -30,17 +29,50 @@ fetch(newurl,{
     console.log('PhotoUrl:', photoUrl);
     setname(displayName);
     setprofile(photoUrl)
-    console.log('All OK Profile',data)
    })
    .catch((err)=>{
     alert(err.message)
    })
   },[])
 
+
+
   const edit = (e) => {
     e.preventDefault();
     setUpdate((prevstate) => !prevstate);
   };
+
+
+
+  const verifyemail=(e)=>{
+    e.preventDefault()
+    const tokenold=localStorage.getItem('token')
+    let url="https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyC6JbZDqf63EMa4jOcDc2zdGFv4f9ok1ck"  
+    fetch(url,{
+        method:'POST',
+        body:JSON.stringify({
+        idToken:tokenold,
+        requestType:"VERIFY_EMAIL"
+        }),
+       }).then((res)=>{
+        if(res.ok){
+          return res.json();
+    
+        }else{
+            return res.json().then ((data)=>{
+             let errorMessage="Verification FAiled!";
+            throw new Error(errorMessage)
+            })
+         }
+       }).then((data)=>{
+        console.log('Verified Successfully',data.email)
+       })
+       .catch((err)=>{
+        alert(err.message)
+       })
+
+
+  }
 
   const updatereques = (e) => {
     const tokenold=localStorage.getItem('token')
@@ -98,6 +130,9 @@ fetch(newurl,{
           <button className={`${styles.button} ${styles.cancel}`} onClick={edit}>
             Cancel
           </button>
+          <div>
+          <label>Verify Email Id:</label>
+          <button onClick={verifyemail}>Verify</button></div>
           <label>Full Name:</label>
           <input
             type="text"
