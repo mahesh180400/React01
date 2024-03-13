@@ -1,18 +1,23 @@
 import { useContext, useState,useEffect } from 'react';
 import styles from './Main.module.css';
 import AuthContext from '../Store/authcontext';
-
+import {  useNavigate } from 'react-router-dom';
 
 const Main = () => {
-  const [money, setMoney] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Select');
+  const navigate=useNavigate();
+  const [Money, setMoney] = useState('');
+  const [edit,setedit]=useState(false);
+  const [editid,seteditid]=useState('');
+  const [Description, setDescription] = useState('');
+  const [Category, setCategory] = useState('Select');
   const [expenses, setExpenses] = useState([]);
 
   const authctx = useContext(AuthContext);
   const isLoggedIn = authctx.isLoggedIn;
   const logoutHandler = () => {
     authctx.logout();
+    navigate("/")
+
   };
 
   
@@ -31,10 +36,11 @@ const Main = () => {
      }
    }).then((data)=>{
     
-    const newdata=Object.values(data)
-    setExpenses(newdata)
-    console.log(newdata)
-   })
+    const keys = data && Object.keys(data);
+    const newExpenses = keys.map((key) => ({ id: key, ...data[key] }));
+    setExpenses(newExpenses);
+    console.log(newExpenses);
+        })
    .catch((err)=>{
     alert(err.message)
    })
@@ -42,9 +48,41 @@ const Main = () => {
 
 
 
+  const handleDelete = (expense_id) => {
+ 
+
+    const updatedExpenses = expenses.filter((expense) => expense.id !== expense_id);
+    setExpenses(updatedExpenses);
+    // Send DELETE request to Firebase
+    const deleteUrl = `https://desire-acb3b-default-rtdb.firebaseio.com/userdata/${expense_id}.json`;
+    fetch(deleteUrl, {
+      method: 'DELETE',
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Deleting Failed!');
+        }else{
+          console.log("Delete Successfully")
+        }
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
 
+  const handleEdit = (expense) => {
 
+    const id=expense.id
+    const updatedExpenses = expenses.filter((expense) => expense.id !== id);
+    setExpenses(updatedExpenses);
+    console.log('editcalled')
+    setMoney(expense.Money);
+    setDescription(expense.Description);
+    setCategory(expense.Category);
+    setedit(true);
+    seteditid(expense.id)
+  };
 
 
 
@@ -53,21 +91,61 @@ const Main = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (money && description && category !== 'Select') {
+    if (Money && Description && Category !== 'Select') {
       const newExpense = {
-        money,
-        description,
-        category,
+        Money,
+        Description,
+        Category,
       };
       setExpenses([...expenses, newExpense]);
 
-      let url="https://desire-acb3b-default-rtdb.firebaseio.com/userdata.json"
+      const chooseputorpost=edit;
+      if(chooseputorpost)
+      {
+        // Assuming you have the selectedExpenseKey state set when editing an expense
+const updateUrl = `https://desire-acb3b-default-rtdb.firebaseio.com/userdata/${editid}.json`;
+
+fetch(updateUrl, {
+  method: 'PUT',
+  body: JSON.stringify({
+    Money: Money,
+    Description: Description,
+    Category: Category,
+  }),
+  headers: {
+    'Content-type': 'application/json',
+  },
+})
+  .then((res) => {
+    if (res.ok) {
+      console.log('Update Successful');
+      setedit(false)
+      seteditid("");
+      setMoney('');
+      setDescription('');
+      setCategory('Select');
+    } else {
+      return res.json().then((data) => {
+        let errorMessage = 'Updating Failed!';
+        throw new Error(errorMessage);
+      });
+    }
+  })
+  .catch((err) => {
+    alert(err.message);
+  });
+
+
+
+ }else
+      {
+        let url="https://desire-acb3b-default-rtdb.firebaseio.com/userdata.json"
       fetch(url,{
         method:'POST',
         body:JSON.stringify({
-           Money:money,
-           Description:description,
-           Category:category,
+           Money:Money,
+           Description:Description,
+           Category:Category,
         }),
         headers:{
             'Content-type':'application.json'
@@ -83,23 +161,15 @@ const Main = () => {
             })
          }
        }).then((data)=>{
-        console.log('All OK',data);
+        console.log('All OK');
        })
        .catch((err)=>{
         alert(err.message)
        })
-       
-
-
-
-
-
-
-      setMoney('');
+       setMoney('');
       setDescription('');
       setCategory('Select');
-    } else {
-      alert('Please fill in all the fields.');
+    } 
     }
   };
 
@@ -109,11 +179,11 @@ const Main = () => {
       <form onSubmit={handleSubmit}>
         <h2>Expense Form</h2>
         <strong>Money:</strong>
-        <input type="number" value={money} onChange={(e) => setMoney(e.target.value)} />
+        <input type="number" value={Money} onChange={(e) => setMoney(e.target.value)} />
         <strong>Description:</strong>
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+        <input type="text" value={Description} onChange={(e) => setDescription(e.target.value)} />
         <strong>Category:</strong>
-        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <select value={Category} onChange={(e) => setCategory(e.target.value)}>
           <option>Select</option>
           <option>Food</option>
           <option>Petrol</option>
@@ -125,10 +195,12 @@ const Main = () => {
       <div>
         <h2>Expense List</h2>
         <ul>
-          {Array.isArray(expenses) && expenses.map((expense, index) => (
+          {expenses && expenses.map((expense,index) => (
             <li key={index}>
               <strong>Money:</strong> {expense.Money}, <strong>Description:</strong>{' '}
               {expense.Description}, <strong>Category:</strong> {expense.Category}
+              <button onClick={()=>handleEdit(expense)}>Edit</button>
+               <button onClick={()=>handleDelete(expense.id)}>Delete</button>
             </li>
           ))}
         </ul>
