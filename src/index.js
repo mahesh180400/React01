@@ -1,27 +1,9 @@
-// index.js or App.js
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
+import Store from './store/index';
+import './index.css';
 import App from './App';
-import { AuthContextProvider } from './Store/authcontext';
 
-const rootElement = document.getElementById('root');
-
-const createRoot = () => {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <AuthContextProvider>
-        <App />
-      </AuthContextProvider>
-    </React.StrictMode>
-  );
-};
-
-// For React 18
-if (rootElement.createReactRoot) {
-  rootElement.createReactRoot();
-  createRoot();
-} else {
-  createRoot();
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Provider store={Store}><App /></Provider>);
