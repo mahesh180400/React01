@@ -1,6 +1,7 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Main.module.css';
-import AuthContext from '../Store/store';
+import { authaction } from '../Store/store';
+import { useDispatch,useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
@@ -10,12 +11,12 @@ const Main = () => {
   const [editid, setEditId] = useState('');
   const [Description, setDescription] = useState('');
   const [Category, setCategory] = useState('Select');
-  const [expenses, setExpenses] = useState([]);
-
-  const authctx = useContext(AuthContext);
-  const isLoggedIn = authctx.isLoggedIn;
+  const dispatch=useDispatch();
+  const isLoggedIn = useSelector((state)=>state.isLoggedIn);
+  const expenseArray = useSelector(state => state.auth.expenseArray);
+  console.log(expenseArray)
   const logoutHandler = () => {
-    authctx.logout();
+   dispatch(authaction.logout())
     navigate("/");
   };
   const fetchData =async () => {
@@ -36,45 +37,34 @@ const Main = () => {
       })
       .then((data) => {
         if (data === null) {
-      // Handle the case where the fetched data is null
       console.log("No data found.");
-      // You can set an empty array or handle it according to your application logic
-      setExpenses([]);
+      
     } else {
       const keys = Object.keys(data);
       const newExpenses = keys.map((key) => ({ id: key, ...data[key] }));
-      setExpenses(newExpenses);
-      console.log(newExpenses);
+      console.log(newExpenses)
+      dispatch(authaction.addData(newExpenses));
     }
       })
       .catch((err) => {
         alert(err.message);
       });
   };
-  
-
   useEffect(() => {
     fetchData();
-  }, []);
-
-  const handleDelete = (expense_id) => {
-    const updatedExpenses = expenses.filter((expense) => expense.id !== expense_id);
-    setExpenses(updatedExpenses);
+  },[]);
+  const handleDelete = async (expense_id) => {
     const deleteUrl = `https://desire-acb3b-default-rtdb.firebaseio.com/userdata/${expense_id}.json`;
-    fetch(deleteUrl, {
-      method: 'DELETE',
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Deleting Failed!');
-        } else {
-          console.log("Delete Successfully")
-          setEdit(!edit); // Refresh data after successful delete
-        }
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
+
+    try {
+      const response = await fetch(deleteUrl, { method: 'DELETE' });
+      if (!response.ok) {
+        throw new Error('Deleting Failed!');
+      }
+      dispatch(authaction.deleteData(expense_id))
+    } catch (error) {
+      alert(error.message);
+    }
   };
 
   const handleEdit = (expense) => {
@@ -83,6 +73,7 @@ const Main = () => {
     setCategory(expense.Category);
     setEdit(true);
     setEditId(expense.id);
+    dispatch(authaction.deleteData(expense.id))
   };
 
   const handleSubmit = (e) => {
@@ -147,7 +138,7 @@ const Main = () => {
       <div>
         <h2>Expense List</h2>
         <ul>
-          {expenses && expenses.map((expense) => (
+          {expenseArray && expenseArray.map((expense) => (
             <li key={expense.id}>
               <strong>Money:</strong> {expense.Money}, <strong>Description:</strong>{' '}
               {expense.Description}, <strong>Category:</strong> {expense.Category}

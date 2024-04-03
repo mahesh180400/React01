@@ -1,40 +1,45 @@
-import React, { useState } from "react";
-const AuthContext=React.createContext({
-    token:"",
-    isLoggedIn:false,
-    login:(token)=>{},
-    logout:()=>{}
+import {createSlice,configureStore} from '@reduxjs/toolkit';
+
+const authSlice=createSlice({
+    name:"auth",
+    initialState:{
+        token:localStorage.getItem("token") || "",
+        isLoggedIn:!!localStorage.getItem("token"),
+        expenseArray:[],
+    },
+    reducers:{
+        login(state,action)
+        {
+            const token=action.payload;
+            state.token=token;
+            state.isLoggedIn=true;
+            localStorage.setItem("token",token);
+        },
+        logout(state)
+        {
+            state.token="";
+            state.isLoggedIn=false;
+            localStorage.removeItem("token");
+        },
+        addData(state,action)
+        {
+            
+            state.expenseArray=action.payload;
+        },
+        deleteData(state,action)
+        {
+            const idDelete=action.payload;
+            state.expenseArray=state.expenseArray.filter(item=>item.id!==idDelete)
+        }
+    }
 });
 
-export const AuthContextProvider=(props)=>{
-    const initialtoken=localStorage.getItem('token');
-    const [token,settoken]=useState(initialtoken);
-    const userIsLoggedIn= !!token;
 
-    const loginHandler=(token)=>{
-        settoken(token)
-        localStorage.setItem('token',token);
-        setTimeout(()=>{
-            logoutHandler();
-            console.log('TATA BYE BYE KHATAM')
-        },600*1000);
-        console.log('Login Function is CAlled!')
-    };
-
-    const logoutHandler=()=>{
-        console.log('logout called')
-        settoken(null);
-        localStorage.removeItem('token');
-        
-    };
-    const contextValue={
-        token:token,
-        isLoggedIn:userIsLoggedIn,
-        login:loginHandler,
-        logout:logoutHandler
+const store=configureStore({
+    reducer:{
+        auth:authSlice.reducer,
     }
-    return( <AuthContext.Provider value={contextValue}> 
-        {props.children}
-    </AuthContext.Provider>)
-};
-export default AuthContext;
+});
+
+export const authaction=authSlice.actions;
+export default store;

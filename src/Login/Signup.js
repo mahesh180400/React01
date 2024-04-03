@@ -1,10 +1,11 @@
-import { useState,useContext } from 'react';
+import { useState } from 'react';
 import styles from './Signup.module.css';
 import { Link } from 'react-router-dom';
-import AuthContext from '../Store/store'
+import {  useDispatch } from 'react-redux';
+import { authaction } from '../Store/store';
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
-const authctx=useContext(AuthContext);
+const dispatch=useDispatch();
 const navigate=useNavigate();
   const [email, setemail] = useState('');
   const [pass, setpass] = useState('');
@@ -55,7 +56,7 @@ const navigate=useNavigate();
         })
      }
    }).then((data)=>{
-    authctx.login(data.idToken)
+    dispatch(authaction.login(data.idToken))
   islogin?navigate('/profile_edit'):navigate("");
     console.log('All OK',data.idToken);
     swithAuthmodeHandler()
