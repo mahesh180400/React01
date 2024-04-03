@@ -1,7 +1,7 @@
 import { useState,useContext } from 'react';
 import styles from './Signup.module.css';
 import { Link } from 'react-router-dom';
-import AuthContext from '../Store/authcontext';
+import AuthContext from '../Store/store'
 import { useNavigate } from 'react-router-dom';
 const Signup = () => {
 const authctx=useContext(AuthContext);
