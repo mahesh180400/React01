@@ -6,6 +6,8 @@ const authSlice=createSlice({
         token:localStorage.getItem("token") || "",
         isLoggedIn:!!localStorage.getItem("token"),
         expenseArray:[],
+        isPremium:false,
+        isDarkTheme:false,
     },
     reducers:{
         login(state,action)
@@ -30,6 +32,15 @@ const authSlice=createSlice({
         {
             const idDelete=action.payload;
             state.expenseArray=state.expenseArray.filter(item=>item.id!==idDelete)
+        },
+        activatePremium(state) {
+              state.isPremium = true;
+              console.log("Premium activated");
+            
+          },
+        toggleTheme(state){
+            state.isDarkTheme=!state.isDarkTheme;
+            console.log("Toggle")
         }
     }
 });

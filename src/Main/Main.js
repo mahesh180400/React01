@@ -11,10 +11,14 @@ const Main = () => {
   const [editid, setEditId] = useState('');
   const [Description, setDescription] = useState('');
   const [Category, setCategory] = useState('Select');
-  const dispatch=useDispatch();
-  const isLoggedIn = useSelector((state)=>state.isLoggedIn);
+  const isLoggedIn = useSelector((state)=>state.auth.isLoggedIn);
+  const isPremium = useSelector(state => state.auth.isPremium);
+  const isDarkTheme = useSelector(state => state.auth.isDarkTheme);
   const expenseArray = useSelector(state => state.auth.expenseArray);
-  console.log(expenseArray)
+  const totalAmount=expenseArray.reduce((total, item) => total + Number(item.Money), 0) 
+  console.log(expenseArray,isLoggedIn);
+
+
   const logoutHandler = () => {
    dispatch(authaction.logout())
     navigate("/");
@@ -53,6 +57,32 @@ const Main = () => {
   useEffect(() => {
     fetchData();
   },[]);
+  const dispatch=useDispatch();
+
+  const handleActivatePremium = () => {
+    console.log("call 1")
+    dispatch(authaction.activatePremium());
+  };
+  
+const handleToggleTheme=()=>{
+  dispatch(authaction.toggleTheme());
+}
+
+const handleDownloadExpenses=()=>{
+  console.log("download expense",expenseArray);
+  const csv = expenseArray.map(expense => Object.values(expense).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = 'expenses.csv';
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+}
+
+
   const handleDelete = async (expense_id) => {
     const deleteUrl = `https://desire-acb3b-default-rtdb.firebaseio.com/userdata/${expense_id}.json`;
 
@@ -117,7 +147,7 @@ const Main = () => {
       
     }
   return (
-    <div className={styles.container}>
+    <div className={isDarkTheme ? styles.containerDark : styles.containerLight}>
       {isLoggedIn && <button onClick={logoutHandler} className={styles.logoutButton}>Log Out</button>}
       <form onSubmit={handleSubmit}>
         <h2>Expense Form</h2>
@@ -137,6 +167,9 @@ const Main = () => {
 
       <div>
         <h2>Expense List</h2>
+        <h4>Total Expense: {totalAmount} </h4>
+      {totalAmount> 10000 && <button className={styles.premiumButton} onClick={handleActivatePremium}>Active Premium</button>}
+      <button onClick={handleToggleTheme}>Toggle Theme</button>
         <ul>
           {expenseArray && expenseArray.map((expense) => (
             <li key={expense.id}>
@@ -145,7 +178,8 @@ const Main = () => {
               <button onClick={() => handleEdit(expense)}>Edit</button>
               <button onClick={() => handleDelete(expense.id)}>Delete</button>
             </li>
-          ))}
+            ))}
+           {isPremium && <button className={styles.premiumButton} onClick={handleDownloadExpenses}>DownLoad</button>}
         </ul>
       </div>
     </div>
