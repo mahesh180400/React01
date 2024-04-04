@@ -1,27 +1,12 @@
-// index.js or App.js
-
-import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import './index.css';
 import App from './App';
-import store from './Store/store';
 import { Provider } from 'react-redux';
-const rootElement = document.getElementById('root');
-
-const createRoot = () => {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <App />
-        </Provider>
-    </React.StrictMode>
-  );
-};
-
-// For React 18
-if (rootElement.createReactRoot) {
-  rootElement.createReactRoot();
-  createRoot();
-} else {
-  createRoot();
-}
+import store from './store/index';
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+<Provider store={store}>
+<App />
+</Provider>
+);
