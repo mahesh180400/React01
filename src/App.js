@@ -1,43 +1,24 @@
-import { Fragment,useEffect } from 'react';
-import Cart from './components/Cart/Cart';
-import Layout from './components/Layout/Layout';
-import Products from './components/Shop/Products';
-import {  useDispatch, useSelector } from 'react-redux';
-import Notification from './components/UI/Notification';
-import { sendCartData,fetchCartData } from './store/cart-action';
-let isInitial=true;
-
-
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Signup from './Login/Signup';
+import ProfileEdit from './Login/ProfileEdit';
+import Main from './Main/Main';
+import Forgot from './Login/Forgot';
+import Greeting from './Login/Greeting';
 function App() {
-  const dispatch=useDispatch()
-  const showCart=useSelector(state=>state.ui.cartIsVisible)
-  const cart=useSelector(state=>state.cart)
-  const notification=useSelector((state)=>state.ui.notification)
-  useEffect(()=>{
-    dispatch(fetchCartData())
-  },[dispatch])
-  
-  
-  
-  useEffect(()=>{
-    if(isInitial){
-      isInitial=false;
-      return;
-    }
-    dispatch(sendCartData(cart))
-},[cart,dispatch])
   return (
-    <Fragment>
-      {notification &&( <Notification 
-      status={notification.status} 
-      title={notification.title}
-      message={notification.message}/>)
-      }
-    <Layout>
-    {showCart && <Cart />}
-      <Products />
-    </Layout>
-    </Fragment>
+    <>
+    <Greeting></Greeting>
+      <Router>
+        <Routes>
+          <Route path="*" element={<Signup></Signup>}></Route>
+          <Route path="" element={<Signup />} />
+          <Route path="/profile_edit" element={<ProfileEdit></ProfileEdit>} />
+          <Route path="/main" element={<Main></Main>}/>
+          <Route path="/forgot_password" element={<Forgot></Forgot>}/>
+        </Routes>
+      </Router>
+    </>
   );
 }
 
