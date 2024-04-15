@@ -5,10 +5,12 @@ import ProfileEdit from './Login/ProfileEdit';
 import Main from './Main/Main';
 import Forgot from './Login/Forgot';
 import Greeting from './Login/Greeting';
+import Async from './Login/Async';
 function App() {
   return (
     <>
     <Greeting></Greeting>
+    <Async></Async>
       <Router>
         <Routes>
           <Route path="*" element={<Signup></Signup>}></Route>
