@@ -66,7 +66,7 @@ const navigate=useNavigate()
 
   return (
     <Container className="d-flex justify-content-center align-items-center vh-100">
-      <div className="p-4 rounded" style={{ backgroundColor: '#f8f9fa', maxWidth: '400px', width: '100%' }}>
+      <div className="p-4 rounded" style={{backgroundColor: '#f8f9fa', maxWidth: '400px', width: '100%' }}>
         <h2 className="text-center mb-4">{login?"Login":"Signup"}</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">

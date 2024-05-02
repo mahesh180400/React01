@@ -1,22 +1,36 @@
 import SignUp from "./Starting/SignUp";
-import Main from "./Main/Main";
-import BasicExample from "./Starting/ColorSchemesExample";
+import MainIntro from "./Main/MainIntro";
+import SendMail from "./Main/SendMail";
+import Inbox from "./Main/Inbox";
 import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
 function App() {
   return (
  <>
  <Router>
   <Routes>
-  <Route path="/Main" element={
+ <Route path="/" element={<>
+ <SignUp />
+  </>} />
+ 
+ <Route path="/Main" element={
   <>
-  <h1>Welcome Buddy!</h1>
-<Main></Main>
+  <MainIntro></MainIntro>
 </>}/>
-  <Route path="/" element={<>
-          <BasicExample />
-          <SignUp />
-        </>} />
- </Routes>
+
+<Route path="/compose" element={
+  <>
+ <SendMail></SendMail>
+  </>
+}/>
+
+<Route path="/Inbox" element={
+  <>
+<Inbox></Inbox>
+  </>
+}/>
+
+
+</Routes>
  </Router>
   </>
   );
