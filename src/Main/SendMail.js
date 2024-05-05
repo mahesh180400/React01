@@ -5,7 +5,8 @@ function SendMail() {
   const [emailData, setEmailData] = useState({
     to: '',
     subject: '',
-    body: ''
+    body: '',
+    read:false,
   });
 
   const handleChange = (e) => {
