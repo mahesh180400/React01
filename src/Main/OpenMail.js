@@ -1,26 +1,26 @@
-// OpenMail.js
 import React from 'react';
-import './OpenMail.css'; // Import custom CSS for styling
+import './OpenMail.css';
 
 function OpenMail({ mail, onClose }) {
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
-    <div className="modal fade show" tabIndex="-1" style={{ display: "block" }}>
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{mail.subject}</h5>
-            <button type="button" className="close" onClick={onClose}>
-              <span>&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            <p><strong>From:</strong> {mail.to}</p>
-            <p><strong>Subject:</strong> {mail.subject}</p>
-            <p><strong>Body:</strong> {mail.body}</p>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
-          </div>
+    <div className="modal-container">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h5 className="modal-title">Received from : {mail.to}</h5>
+          <button className="close" onClick={handleClose}>X</button>
+        </div>
+        <div className="modal-body">
+        <p>Date & Time: {mail.time}</p>
+          <p>To: {mail.to}</p>
+          <p>Subject: {mail.subject}</p>
+          <p>Body: {mail.body}</p>
+        </div>
+        <div className="modal-footer">
+          <button className="btn-secondary" onClick={handleClose}>Close</button>
         </div>
       </div>
     </div>

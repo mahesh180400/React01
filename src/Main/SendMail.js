@@ -7,12 +7,14 @@ function SendMail() {
     subject: '',
     body: '',
     read:false,
+    time:'',
   });
 
   const handleChange = (e) => {
     setEmailData({
       ...emailData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
+      time: new Date().toLocaleString()
     });
   };
 

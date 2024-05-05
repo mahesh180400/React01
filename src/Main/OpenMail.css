@@ -10,6 +10,9 @@
     align-items: center;
     justify-content: center;
   }
+  .modal-container.opened {
+    background-color: rgba(0, 0, 0, 0.8); /* Change the background color */
+  }
   
   .modal-content {
     background-color: #fff;
@@ -33,6 +36,7 @@
     border: none;
     outline: none;
     cursor: pointer;
+    
   }
   
   .modal-body {
