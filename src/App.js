@@ -23,12 +23,6 @@ function App() {
   </>
 }/>
 
-<Route path="/Inbox" element={
-  <>
-<Inbox></Inbox>
-  </>
-}/>
-
 
 
 

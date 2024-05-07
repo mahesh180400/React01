@@ -96,7 +96,7 @@ function Inbox() {
       {selectedMail && (
         <div className="row">
           <div className="col-md-12">
-            <OpenMail mail={selectedMail} onClose={handleCloseMail} />
+            <OpenMail mail={selectedMail} onClose={handleCloseMail} fetchMails={fetchMails} />
           </div>
         </div>
       )}

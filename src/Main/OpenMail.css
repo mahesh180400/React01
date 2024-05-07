@@ -1,4 +1,3 @@
-/* OpenMail.css */
 .modal-container {
     position: fixed;
     top: 0;
@@ -11,7 +10,7 @@
     justify-content: center;
   }
   .modal-container.opened {
-    background-color: rgba(0, 0, 0, 0.8); /* Change the background color */
+    background-color: rgba(0, 0, 0, 0.8); 
   }
   
   .modal-content {
