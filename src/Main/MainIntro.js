@@ -10,7 +10,7 @@ const MainIntro = () => {
             <div className="btn-group-vertical w-100 mb-4" role="group" aria-label="Vertical button group">
               <a href="/Compose" className="btn btn-primary btn-block mb-2">Compose</a>
               <a href="/Main" className="btn btn-primary btn-block mb-2">Inbox</a>
-              <button type="button" className="btn btn-primary btn-block mb-2">Spam</button>
+              <a href="/SendBox" className="btn btn-primary btn-block mb-2">Send Box</a>
               <button type="button" className="btn btn-primary btn-block mb-2">Button</button>
             </div>
           </div>

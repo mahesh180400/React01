@@ -22,8 +22,11 @@ function App() {
  <SendMail></SendMail>
   </>
 }/>
-
-
+<Route path="/SendBOx" element={
+  <>
+  <Inbox></Inbox>
+  </>
+}/>
 
 
 </Routes>

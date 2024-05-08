@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SendMail.css'
 
 function SendMail() {
+  const navigate=useNavigate()
   const [emailData, setEmailData] = useState({
     to: '',
     subject: '',
@@ -51,6 +53,8 @@ function SendMail() {
       });
 
       alert('Email sent successfully');
+      navigate('/SendBox')
+
     } else {
       throw new Error('Error sending email');
     }
