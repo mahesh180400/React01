@@ -1,7 +1,6 @@
 import SignUp from "./Starting/SignUp";
 import MainIntro from "./Main/MainIntro";
 import SendMail from "./Main/SendMail";
-import Inbox from "./Main/Inbox";
 import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
 function App() {
   return (
@@ -24,7 +23,7 @@ function App() {
 }/>
 <Route path="/SendBOx" element={
   <>
-  <Inbox></Inbox>
+ <MainIntro></MainIntro>
   </>
 }/>
 

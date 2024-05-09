@@ -15,6 +15,8 @@ function Inbox() {
         const mailsArray = Object.entries(fetchedMails).map(([key, mail]) => ({ ...mail, id: key }));
         setMails(mailsArray);
         setUnreadCount(mailsArray.filter(mail => mail.read === false).length);
+        console.log('calling in Every 2 seconds')
+        
       } else {
         setMails([]);
         setUnreadCount(0);
@@ -25,7 +27,10 @@ function Inbox() {
   };
 
   useEffect(() => {
-    fetchMails();
+    fetchMails(); 
+    const intervalId = setInterval(fetchMails, 2000); 
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleMailClick = async (mail) => {
@@ -88,7 +93,7 @@ function Inbox() {
         <div className="col-md-3">
           <div className="position-fixed top-0 end-0 p-3">
             <div className="bg-primary text-white p-2 rounded">
-              Unread Count: {unreadCount}
+              Unread Mails: {unreadCount}
             </div>
           </div>
         </div>

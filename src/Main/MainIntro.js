@@ -1,6 +1,8 @@
 import React from 'react';
 import Inbox from './Inbox';
 const MainIntro = () => {
+  
+  
   return (
     <div>
       <h1 className="text-center mt-4 mb-4">House For Email</h1>
@@ -17,7 +19,7 @@ const MainIntro = () => {
           <div className="col-md-9">
             <div className="card bg-light h-100">
               <div className="card-body">
-                <Inbox></Inbox>
+                <Inbox ></Inbox>
               </div>
             </div>
           </div>

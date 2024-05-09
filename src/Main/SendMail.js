@@ -94,8 +94,10 @@ function SendMail() {
           onChange={handleChange}
           required
         ></textarea>
-        <button type="submit">Send Email</button>
+        <button type="submit" style={{ marginRight: '10px' }}>Send Email</button>
+        <button type="button" onClick={() => navigate('/Main')}>Cancel</button>
       </form>
+      
     </div>
   );
 }
