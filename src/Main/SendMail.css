@@ -2,18 +2,21 @@
 
 body {
     font-family: Arial, sans-serif;
+    background: linear-gradient(100deg, #0630ee, #531e87);
   }
   
   .container {
-    max-width: 600px;
+    max-width: 500px;
     margin: 50px auto;
     padding: 20px;
-    border: 1px solid #0b0404;
+    border: 2px solid #0b0404;
     border-radius: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
   }
   
   label {
     font-weight: bold;
+    
   }
   
   input[type="email"],
@@ -28,14 +31,14 @@ body {
   
   button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #4510e6;
+    border-color: #4510e6;
     color: #fff;
-    border: none;
-    border-radius: 5px;
+    border-radius: 9px;
     cursor: pointer;
   }
   
   button:hover {
-    background-color: #0056b3;
+    background-color: #6640d9;
   }
   

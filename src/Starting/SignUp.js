@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Container, Form, Button } from 'react-bootstrap';
+import {  Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import './SignUp.css'
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,6 +12,9 @@ const SwithMode=()=>{
   setlogin((pre)=>!pre)
 }
 const navigate=useNavigate()
+
+
+
 
 
   const handleSubmit = (event) => {
@@ -63,53 +67,55 @@ const navigate=useNavigate()
         });
     }
   };
-
   return (
-    <Container className="d-flex justify-content-center align-items-center vh-100">
-      <div className="p-4 rounded" style={{backgroundColor: '#f8f9fa', maxWidth: '400px', width: '100%' }}>
-        <h2 className="text-center mb-4">{login?"Login":"Signup"}</h2>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+    <div className="custom-container"> {/* Apply your custom container class */}
+      <div className="content">
+        <div className="p-4 rounded">
+          <h2 className="text-center mb-4">{login ? "Login" : "Signup"}</h2>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
 
-         {!login&& <Form.Group controlId="formBasicConfirmPassword">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-          </Form.Group>}
+            {!login && <Form.Group controlId="formBasicConfirmPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </Form.Group>}
 
-          <Button variant="primary" type="submit" block>
-           {login?"Login":"Sign UP"}
-          </Button>
-          <p>{login?"If you are new here ?":"IF you have a account ?"}
-          <Button variant="primary" onClick={SwithMode} block>
-           {!login?"Login":"Sign UP"}
-          </Button>
-          </p>
-        </Form>
+            <Button variant="custom-primary" type="submit" block>
+              {login ? "Login" : "Sign UP"}
+            </Button>
+            <br></br>
+            <strong>{login ? "If you are new here ?" : "If you have an account ?"}
+              <Button variant="custom-primary" onClick={SwithMode} block>
+                {!login ? "Login" : "Sign UP"}
+              </Button>
+            </strong>
+          </Form>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 }
 

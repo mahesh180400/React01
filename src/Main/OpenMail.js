@@ -36,7 +36,9 @@ function OpenMail({ mail, onClose,fetchMails }) {
         <div className="modal-header">
           <h5 className="modal-title">Received from : {mail.to}</h5>
          
-          <button onClick={handleDelete}>Delete</button>
+  <button className="close" onClick={handleDelete}>Delete</button>
+
+     
         </div>
         <div className="modal-body">
         <p>Date & Time: {mail.time}</p>

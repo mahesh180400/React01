@@ -1,0 +1,37 @@
+.custom-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Make the container take up the full height of the viewport */
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  
+  .content {
+    background-color: rgba(91, 20, 178, 0.9); /* Adjust the opacity as needed */
+    padding: 20px;
+    border-radius: 10px;
+    width: 20%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+  }.custom-container .content .btn-custom-primary {
+    background-color: #3611d772;
+    border-color: #3611d772;
+    color: #fff;
+  }
+  
+  .custom-container .content .btn-custom-primary:hover {
+    background-color: #5a67d8;
+    border-color: #5a67d8;
+  }
+  
+  .custom-container .content .btn-custom-primary:focus,
+  .custom-container .content .btn-custom-primary.focus {
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.5);
+  }
+  
+  .custom-container .content .btn-custom-primary:not(:disabled):not(.disabled):active,
+  .custom-container .content .btn-custom-primary:not(:disabled):not(.disabled).active,
+  .show > .custom-container .content .btn-custom-primary.dropdown-toggle {
+    background-color: #556cd6;
+    border-color: #4e5d7c;
+  }
+  
